@@ -1,17 +1,26 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <link rel="manifest" href="manifest.json" />
   <meta charset="UTF-8">
   <title>🔮 Tartarot</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="manifest.json">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script>
     window.onload = () => {
-      if (window.Telegram && Telegram.WebApp) {
-        Telegram.WebApp.ready();
-        Telegram.WebApp.expand();
+      if (window.Telegram.WebApp) {
+        const webApp = Telegram.WebApp;
+        webApp.ready();
+        webApp.expand();
+
+        // Для отладки (можно удалить)
+        console.log('initDataUnsafe:', webApp.initDataUnsafe);
+        console.log('User:', webApp.initDataUnsafe?.user?.username);
+
+        // Пример кнопки для действий
+        // webApp.sendData("user_ready");
       }
-    }
+    };
   </script>
   <style>
     body {
@@ -32,7 +41,7 @@
   </style>
 </head>
 <body>
-  <h1>Добро пожаловать в Tarot_bot 🔮</h1>
+  <h1>Добро пожаловать в Tartarot 🔮</h1>
   <p>Пожалуйста, вернитесь в Telegram-бот и выберите сеанс для оплаты звёздами ✨</p>
 </body>
 </html>
