@@ -1,0 +1,9 @@
+{
+  "name": "Tartarot",
+  "short_name": "Tartarot",
+  "description": "Добро пожаловать в мир Таро и Звёзд",
+  "start_url": "/tarot_bot/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+}
