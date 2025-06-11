@@ -12,6 +12,24 @@
         Telegram.WebApp.ready();
         Telegram.WebApp.expand();
       }
+    };
+
+    async function buySession(type, price) {
+      try {
+        const result = await Telegram.WebApp.openInvoice({
+          slug: type,         // Slug из Telegram Stars Console
+          amount: price,      // Цена в звёздах
+          currency: "XTR"
+        });
+
+        if (result.status === "paid") {
+          Telegram.WebApp.sendData(type); // Отправляем название сеанса в бот
+        } else {
+          alert("❌ Оплата не прошла или была отменена.");
+        }
+      } catch (e) {
+        alert("🚫 Ошибка при оплате: " + e.message);
+      }
     }
   </script>
   <style>
@@ -29,11 +47,31 @@
     p {
       font-size: 18px;
       color: #ccc;
+      margin-bottom: 30px;
+    }
+    button {
+      background: #ffcc00;
+      color: #000;
+      font-size: 18px;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      margin: 10px;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #ffdb4d;
     }
   </style>
 </head>
 <body>
   <h1>Добро пожаловать в Tartarot 🔮</h1>
-  <p>Вернись в Telegram-бот и выбери сеанс для оплаты звёздами ✨</p>
+  <p>Выберите сеанс и оплатите звёздами ✨</p>
+
+  <button onclick="buySession('tarot', 2)">🃏 Сеанс Таро — 2 Stars</button><br>
+  <button onclick="buySession('numerology', 3)">🔢 Нумерология — 3 Stars</button><br>
+  <button onclick="buySession('astrology', 3)">🌌 Астрология — 3 Stars</button>
+
 </body>
 </html>
