@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>🔮 Tartarot</title>
@@ -13,13 +14,14 @@
       }
     };
 
-    function sendSessionType(type) {
-      if (window.Telegram && Telegram.WebApp) {
-        Telegram.WebApp.sendData(type);
-      } else {
-        alert("❌ Telegram WebApp не инициализирован.");
-      }
-    }
+window.onload = () => {
+  if (window.Telegram && Telegram.WebApp) {
+    Telegram.WebApp.ready();
+    Telegram.WebApp.expand();
+  } else {
+    alert("❌ Telegram WebApp не инициализирован.");
+  }
+};
   </script>
   <style>
     body {
