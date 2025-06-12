@@ -11,17 +11,38 @@
       if (window.Telegram && Telegram.WebApp) {
         Telegram.WebApp.ready();
         Telegram.WebApp.expand();
+        console.log("Telegram WebApp успешно инициализирован");
+      } else {
+        alert("❌ Ошибка: Telegram WebApp не доступен. Пожалуйста, откройте приложение через Telegram.");
+        console.error("Telegram WebApp не инициализирован");
       }
     };
 
-window.onload = () => {
-  if (window.Telegram && Telegram.WebApp) {
-    Telegram.WebApp.ready();
-    Telegram.WebApp.expand();
-  } else {
-    alert("❌ Telegram WebApp не инициализирован.");
-  }
-};
+    function sendSessionType(sessionType) {
+      if (!window.Telegram || !Telegram.WebApp) {
+        alert("❌ Ошибка: Telegram WebApp не доступен.");
+        console.error("sendSessionType: Telegram WebApp не доступен");
+        return;
+      }
+
+      try {
+        // Отправка данных в бот
+        Telegram.WebApp.sendData(sessionType);
+        console.log(`Отправлены данные: ${sessionType}`);
+        
+        // Визуальная обратная связь
+        const button = document.querySelector(`button[onclick="sendSessionType('${sessionType}')"]`);
+        button.disabled = true;
+        button.textContent = "Отправлено...";
+        setTimeout(() => {
+          button.disabled = false;
+          button.textContent = button.textContent.replace("Отправлено...", `🃏 Сеанс ${sessionType.charAt(0).toUpperCase() + sessionType.slice(1)} — ${sessionType === 'tarot' ? 2 : 3} Stars`);
+        }, 2000);
+      } catch (error) {
+        console.error(`Ошибка при отправке данных: ${error}`);
+        alert("❌ Ошибка при выборе сеанса. Попробуйте снова.");
+      }
+    }
   </script>
   <style>
     body {
@@ -51,8 +72,12 @@ window.onload = () => {
       margin: 10px;
       transition: background 0.3s ease;
     }
-    button:hover {
+    button:hover:not(:disabled) {
       background: #ffdb4d;
+    }
+    button:disabled {
+      background: #666;
+      cursor: not-allowed;
     }
   </style>
 </head>
@@ -60,8 +85,8 @@ window.onload = () => {
   <h1>Добро пожаловать в Tartarot 🔮</h1>
   <p>Выберите сеанс и оплатите звёздами ✨</p>
 
-  <button onclick="sendSessionType('tarot')">🃏 Сеанс Таро — 2 Stars</button><br />
-  <button onclick="sendSessionType('numerology')">🔢 Нумерология — 3 Stars</button><br />
-  <button onclick="sendSessionType('astrology')">🌌 Астрология — 3 Stars</button>
+  <button onclick="sendSessionType('tarot')" aria-label="Сеанс Таро за 2 звезды">🃏 Сеанс Таро — 2 Stars</button><br />
+  <button onclick="sendSessionType('numerology')" aria-label="Сеанс Нумерология за 3 звезды">🔢 Нумерология — 3 Stars</button><br />
+  <button onclick="sendSessionType('astrology')" aria-label="Сеанс Астрология за 3 звезды">🌌 Астрология — 3 Stars</button>
 </body>
 </html>
