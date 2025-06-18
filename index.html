@@ -1,92 +1,51 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+  <meta charset="UTF-8">
+  <title>Tartarot — Сеансы</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🔮 Tartarot</title>
-  <meta name="theme-color" content="#000000" />
-  <script>
-    window.onload = () => {
-      if (window.Telegram && Telegram.WebApp) {
-        Telegram.WebApp.ready();
-        Telegram.WebApp.expand();
-        console.log("Telegram WebApp успешно инициализирован");
-      } else {
-        alert("❌ Ошибка: Telegram WebApp не доступен. Пожалуйста, откройте приложение через Telegram.");
-        console.error("Telegram WebApp не инициализирован");
-      }
-    };
-
-    function sendSessionType(sessionType) {
-      if (!window.Telegram || !Telegram.WebApp) {
-        alert("❌ Ошибка: Telegram WebApp не доступен.");
-        console.error("sendSessionType: Telegram WebApp не доступен");
-        return;
-      }
-
-      try {
-        // Отправка данных в бот
-        Telegram.WebApp.sendData(sessionType);
-        console.log(`Отправлены данные: ${sessionType}`);
-        
-        // Визуальная обратная связь
-        const button = document.querySelector(`button[onclick="sendSessionType('${sessionType}')"]`);
-        button.disabled = true;
-        button.textContent = "Отправлено...";
-        setTimeout(() => {
-          button.disabled = false;
-          button.textContent = button.textContent.replace("Отправлено...", `🃏 Сеанс ${sessionType.charAt(0).toUpperCase() + sessionType.slice(1)} — ${sessionType === 'tarot' ? 2 : 3} Stars`);
-        }, 2000);
-      } catch (error) {
-        console.error(`Ошибка при отправке данных: ${error}`);
-        alert("❌ Ошибка при выборе сеанса. Попробуйте снова.");
-      }
-    }
-  </script>
   <style>
     body {
-      background: #0e0e0e;
-      color: #fff;
       font-family: sans-serif;
+      background: #fff;
+      margin: 0;
+      padding: 20px;
       text-align: center;
-      padding: 40px;
     }
     h1 {
-      font-size: 28px;
-      margin-bottom: 10px;
-    }
-    p {
-      font-size: 18px;
-      color: #ccc;
-      margin-bottom: 30px;
+      color: #333;
     }
     button {
-      background: #ffcc00;
-      color: #000;
+      display: block;
+      margin: 15px auto;
+      padding: 15px 30px;
       font-size: 18px;
-      padding: 12px 24px;
       border: none;
-      border-radius: 12px;
+      border-radius: 8px;
+      background-color: #673ab7;
+      color: white;
       cursor: pointer;
-      margin: 10px;
-      transition: background 0.3s ease;
     }
-    button:hover:not(:disabled) {
-      background: #ffdb4d;
-    }
-    button:disabled {
-      background: #666;
-      cursor: not-allowed;
+    button:hover {
+      background-color: #5e35b1;
     }
   </style>
 </head>
 <body>
-  <h1>Добро пожаловать в Tartarot 🔮</h1>
+  <h1>🔮 Tartarot</h1>
   <p>Выберите сеанс и оплатите звёздами ✨</p>
 
-  <button onclick="sendSessionType('tarot')" aria-label="Сеанс Таро за 2 звезды">🃏 Сеанс Таро — 2 Stars</button><br />
-  <button onclick="sendSessionType('numerology')" aria-label="Сеанс Нумерология за 3 звезды">🔢 Нумерология — 3 Stars</button><br />
-  <button onclick="sendSessionType('astrology')" aria-label="Сеанс Астрология за 3 звезды">🌌 Астрология — 3 Stars</button>
+  <button onclick="buy('tarot')">Таро (2 звезды)</button>
+  <button onclick="buy('numerology')">Нумерология (3 звезды)</button>
+  <button onclick="buy('astrology')">Астрология (3 звезды)</button>
+
+  <script>
+    Telegram.WebApp.ready();
+
+    function buy(sessionType) {
+      Telegram.WebApp.sendData(sessionType); // Отправка строки: 'tarot', 'numerology' или 'astrology'
+    }
+  </script>
 </body>
 </html>
